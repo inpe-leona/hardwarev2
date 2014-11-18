@@ -8,6 +8,7 @@ package br.leona.hardware.test;
 import br.leona.hardware.controller.PTZController;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,8 +26,8 @@ public class HardwareJUnitTest {
 
     @BeforeClass
     public static void setUpClass() {
-    
-        ptzController = new PTZController();
+
+      ptzController = new PTZController();
     }
 
     @AfterClass
@@ -43,8 +44,7 @@ public class HardwareJUnitTest {
 
     @Test
     public void hello() {
-        System.out.println("//**********************entrei no testes");
-
+        int graus = 29;
+        assertEquals(1, ptzController.left(graus));
     }
-
 }

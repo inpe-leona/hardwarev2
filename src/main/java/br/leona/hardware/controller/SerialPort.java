@@ -9,7 +9,6 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,7 +24,7 @@ public class SerialPort {
         this.portaCOM = portaCOM;
         this.taxa = taxa;
         initialize();
-        ;
+        
     }
 
     /**
@@ -72,7 +71,9 @@ public class SerialPort {
         System.out.println("Graus recebidos no envia dados "+ opcao);
         try {
             byte[] bytes = opcao.getBytes();
+            System.out.println("quase");
             serialOut.write(bytes);
+            System.out.println("passou");
         } catch (IOException ex) {
             System.out.println("Não foi possível enviar os dados para porta serial.");
 

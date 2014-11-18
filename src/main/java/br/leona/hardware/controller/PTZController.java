@@ -22,8 +22,7 @@ public final class PTZController {
     public PTZController() {
         searchPorts();
         serialPort = new SerialPort(portaCOM, 9600);
-        left(23);
-   
+      
     }
   
     /*
@@ -58,7 +57,7 @@ public final class PTZController {
     }
 
     public int left(int graus) {
-
+        System.out.println("LIVIA: "+graus);
         if (graus < 10) {
             left = "!00" + graus + "L*";
             System.out.println("LEFT < 10 = " + left);
@@ -73,7 +72,7 @@ public final class PTZController {
             left = "!" + graus + "L*";
             System.out.println("LEFT > 100 = " + left);
             serialPort.enviaDados(left);
-        }
+        }        
         return 1;
     }
 }
