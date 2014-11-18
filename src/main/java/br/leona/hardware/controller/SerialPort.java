@@ -18,22 +18,14 @@ import javax.swing.JOptionPane;
 public class SerialPort {
 
     private OutputStream serialOut;
-    private final int taxa;
-    private final String portaCOM;
-  
+    private int taxa;
+    private String portaCOM;
 
-    /**
-     *
-     * @param portaCOM - Porta COM que será utilizada para enviar dados para
-     * porta serial "arduino"
-     * @param taxa - Taxa de transferência da porta serial geralmente é 9600
-     *
-     */
     public SerialPort(String portaCOM, int taxa) {
         this.portaCOM = portaCOM;
         this.taxa = taxa;
         initialize();
-
+        ;
     }
 
     /**
@@ -41,13 +33,11 @@ public class SerialPort {
      */
     private void initialize() {
         try {
+            System.out.println("hello: "+ portaCOM);
             CommPortIdentifier porta = null;
             try {
-
-                //Tenta verificar se a porta COM informada existe
                 porta = CommPortIdentifier.getPortIdentifier(portaCOM);
                 System.out.println(" Porta = " + porta.getName());
-
             } catch (NoSuchPortException e) {
                 System.out.println("!!!!!!!!!!! Nehuma Porta Encontrada!!!!!!!!!!!" + e);
             }
@@ -70,15 +60,16 @@ public class SerialPort {
         try {
             serialOut.close();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Não foi possível fechar porta COM.",
-                    "Fechar porta COM", JOptionPane.PLAIN_MESSAGE);
+            System.out.println("Não foi possível fechar porta COM");
+
         }
     }
 
     /*
      * Converter para bytes para enviar dados para porta serial
      */
-    public void enviaDados(String opcao) {
+    public int enviaDados(String opcao) {
+        System.out.println("Graus recebidos no envia dados "+ opcao);
         try {
             byte[] bytes = opcao.getBytes();
             serialOut.write(bytes);
@@ -86,5 +77,6 @@ public class SerialPort {
             System.out.println("Não foi possível enviar os dados para porta serial.");
 
         }
+        return 0;
     }
 }

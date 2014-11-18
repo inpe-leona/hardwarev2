@@ -7,14 +7,15 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>javax.media</groupId>
-            <artifactId>jmf</artifactId>
-            <version>2.1.1e</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>rxtx</groupId>
-            <artifactId>RXTXComm</artifactId>
-            <version>0</version>
+            <groupId>org.rxtx</groupId>
+            <artifactId>rxtx</artifactId>
+            <version>2.1.7</version>
         </dependency>
     </dependencies>
     <properties>

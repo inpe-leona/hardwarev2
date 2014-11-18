@@ -12,23 +12,27 @@ import java.util.Enumeration;
  *
  * @author livia.miura
  */
-public class PTZControl {
+public final class PTZController {
 
     private SerialPort serialPort;
-    CommPortIdentifier portas = null;
     private String portaCOM;
+    CommPortIdentifier portas = null;
+    String left, right, up, down;
 
-    public PTZControl() {
+    public PTZController() {
         searchPorts();
         serialPort = new SerialPort(portaCOM, 9600);
+        left(23);
+   
     }
-
+  
     /*
      *
      * Buscar todas as USB Serial Port
      *
      */
     public void searchPorts() {
+
         try {
             Enumeration pList = CommPortIdentifier.getPortIdentifiers();
             System.out.println("Porta =: " + pList.hasMoreElements());
@@ -36,45 +40,40 @@ public class PTZControl {
             while (pList.hasMoreElements()) {
                 portas = (CommPortIdentifier) pList.nextElement();
 
-                System.out.println("Portas " + portas.getName() + " ");
+                if (portas.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                    System.out.println("Serial USB Port: " + portas.getName());
+                } else if (portas.getPortType() == CommPortIdentifier.PORT_PARALLEL) {
+                    System.out.println("Parallel Port: " + portas.getName());
+                } else {
+                    System.out.println("Unknown Port: " + portas.getName());
+                }
+
                 portaCOM = portas.getName();
 
             }
             System.out.println("Porta escolhida =" + portaCOM);
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    /*
-     *by Jean "modelo"
-     */
-
-    public void moveDirection(String degrees, String direction) {
-        System.out.println("Pantilt.moveDirection(String graus, String direcao)");
-        int typedDegrees = Integer.parseInt(degrees);
-        System.out.println("Graus = " + typedDegrees);
-
-        if (direction.equals("LEFT")) {
-            moveLeft(typedDegrees, degrees);
-       
+            System.out.println("*****Erro ao escolher a porta******");
         }
     }
 
-    public void moveLeft(int typedDegrees, String degrees) {
-        System.out.println("Pantilt.moveLeft(String direcao, int grausDigitado, String graus)");
-        String left;
-        if (typedDegrees < 10) {
-            left = "!00" + degrees + "L*";
+    public int left(int graus) {
+
+        if (graus < 10) {
+            left = "!00" + graus + "L*";
             System.out.println("LEFT < 10 = " + left);
             serialPort.enviaDados(left);
-        } else if (typedDegrees >= 10 && typedDegrees < 100) {
-            left = "!0" + degrees + "L*";
+
+        } else if (graus >= 10 && graus < 100) {
+            left = "!0" + graus + "L*";
             System.out.println("LEFT >= 10 and < 100 = " + left);
             serialPort.enviaDados(left);
+
         } else {
-            left = "!" + degrees + "L*";
+            left = "!" + graus + "L*";
             System.out.println("LEFT > 100 = " + left);
             serialPort.enviaDados(left);
         }
+        return 1;
     }
 }
