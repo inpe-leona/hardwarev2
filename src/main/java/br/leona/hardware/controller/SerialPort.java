@@ -12,7 +12,7 @@ import java.io.OutputStream;
 
 /**
  *
- * @author livia.miura
+ * @author leona
  */
 public class SerialPort {
 
@@ -24,7 +24,7 @@ public class SerialPort {
         this.portaCOM = portaCOM;
         this.taxa = taxa;
         initialize();
-        
+
     }
 
     /**
@@ -32,11 +32,9 @@ public class SerialPort {
      */
     private void initialize() {
         try {
-            System.out.println("hello: "+ portaCOM);
             CommPortIdentifier porta = null;
             try {
                 porta = CommPortIdentifier.getPortIdentifier(portaCOM);
-                System.out.println(" Porta = " + porta.getName());
             } catch (NoSuchPortException e) {
                 System.out.println("!!!!!!!!!!! Nehuma Porta Encontrada!!!!!!!!!!!" + e);
             }
@@ -49,11 +47,12 @@ public class SerialPort {
                     gnu.io.SerialPort.STOPBITS_1, //taxa de 10 bits 1 (recebimento)
                     gnu.io.SerialPort.PARITY_NONE); //receber e enviar dados
         } catch (Exception e) {
+            System.out.println("Erro ao inicializar no SerialPort"+e);
         }
     }
 
     /**
-     * Método que fecha a comunicação com a porta serial Ainda sem utilidade
+     * Método que fecha a comunicação com a porta serial 
      */
     public void close() {
         try {
@@ -68,15 +67,12 @@ public class SerialPort {
      * Converter para bytes para enviar dados para porta serial
      */
     public int enviaDados(String opcao) {
-        System.out.println("Graus recebidos no envia dados "+ opcao);
+
         try {
             byte[] bytes = opcao.getBytes();
-            System.out.println("quase");
             serialOut.write(bytes);
-            System.out.println("passou");
         } catch (IOException ex) {
-            System.out.println("Não foi possível enviar os dados para porta serial.");
-
+            System.out.println("Não foi possível enviar os dados para porta serial."+ex);
         }
         return 0;
     }
