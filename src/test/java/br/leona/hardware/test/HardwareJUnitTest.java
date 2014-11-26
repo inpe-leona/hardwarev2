@@ -44,37 +44,37 @@ public class HardwareJUnitTest {
     }
 
     @Test
-    public void camera() { // recebe 1 ou 0
+    public void camera() throws InterruptedException { // recebe 1 ou 0
         int x = 0;
         assertEquals(1, ptzController.camera(x));
     }
 
     @Test
-    public void left() {
+    public void left() throws InterruptedException{
         int graus = 19;
         assertEquals(1, ptzController.left(graus));
     }
 
     @Test
-    public void right() {
+    public void right()throws InterruptedException {
         int graus = 29;
         assertEquals(1, ptzController.right(graus));
     }
 
     @Test
-    public void up() {
+    public void up()throws InterruptedException {
         int graus = 9;
         assertEquals(1, ptzController.up(graus));
     }
 
     @Test
-    public void down() {
+    public void down()throws InterruptedException {
         int graus = 5;
         assertEquals(1, ptzController.down(graus));
     }
 
    // @Test
-    public void reset() {
+    public void reset()throws InterruptedException {
         assertEquals(1, ptzController.reset());
     }
 
@@ -82,5 +82,9 @@ public class HardwareJUnitTest {
     public void close() { // recebe 1 ou 0
         assertEquals(1, ptzController.close());
     }
-
+    
+@Test
+      public void recebe() throws InterruptedException { // recebe 1 ou 0
+        assertEquals(1, ptzController.recebe());
+    }
 }

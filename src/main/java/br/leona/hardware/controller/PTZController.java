@@ -52,7 +52,7 @@ public final class PTZController {
     /*
      *Move para Esquerda
      */
-    public int left(int graus) {
+    public int left(int graus)  throws InterruptedException {
         if (graus < 270) { //limite de elevação 270º
             if (graus < 10) {
                 left = "!00" + graus + "L*";
@@ -76,7 +76,7 @@ public final class PTZController {
     /*
      *Move para Direita
      */
-    public int right(int graus) {
+    public int right(int graus) throws InterruptedException  {
         if (graus < 270) { //limite de elevação 270º
             if (graus < 10) {
                 String right1 = "!00" + graus + "R*";
@@ -100,7 +100,7 @@ public final class PTZController {
     /*
      *Move para Cima
      */
-    public int up(int graus) {
+    public int up(int graus) throws InterruptedException {
         if (graus < 85) { //limite de elevação 85º
             if (graus < 10) {
                 String up1 = "!00" + graus + "U*";
@@ -120,7 +120,7 @@ public final class PTZController {
     /*
      *Move para Baixo
      */
-    public int down(int graus) {
+    public int down(int graus) throws InterruptedException {
         if (graus < 85) { //limite de elevação 85º
             if (graus < 10) {
                 String x3 = "!00" + graus + "D*";
@@ -141,7 +141,7 @@ public final class PTZController {
     /*
      *Liga e desliga a camera
      */
-    public int camera(int valor) {
+    public int camera(int valor) throws InterruptedException {
         System.out.println("camera");
         if (valor == 1) {
             serialPort.enviaDados("!111O*");//camera ON
@@ -154,7 +154,7 @@ public final class PTZController {
     /*
      *Reset o pantilt para 0º e camera (a definir a posição) para Posição Inicial
      */
-    public int reset() {
+    public int reset() throws InterruptedException {
         System.out.println("Reset");
         serialPort.enviaDados("!111S*");
         return 1;
@@ -168,5 +168,9 @@ public final class PTZController {
         serialPort.close();
         return 1;
     }
-
+public int recebe() throws InterruptedException {
+    
+        serialPort.recebeDados();
+        return 1;
+    }
 }
