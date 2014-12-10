@@ -43,31 +43,39 @@ public class HardwareJUnitTest {
     public void tearDown() {
     }
 
-    @Test
+    
+     @Test
+    public void calculo() { 
+        
+    int  graus = 22;
+        assertEquals(1, ptzController.calculoAzimuteElevacao(graus,"azimute"));
+    }
+    
+    //@Test
     public void camera() { // recebe 1 ou 0
         int x = 0;
         assertEquals(1, ptzController.camera(x));
     }
 
-    @Test
+   // @Test
     public void left() {
         int graus = 19;
         assertEquals(1, ptzController.left(graus));
     }
 
-    @Test
+ //  @Test
     public void right() {
         int graus = 29;
         assertEquals(1, ptzController.right(graus));
     }
 
-    @Test
+   // @Test
     public void up() {
         int graus = 9;
         assertEquals(1, ptzController.up(graus));
     }
 
-    @Test
+  //  @Test
     public void down() {
         int graus = 5;
         assertEquals(1, ptzController.down(graus));

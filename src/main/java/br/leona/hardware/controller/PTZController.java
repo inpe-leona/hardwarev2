@@ -18,6 +18,7 @@ public final class PTZController {
     private String portaCOM;
     CommPortIdentifier portas = null;
     String left, right, up, down;
+    int AzGraus, ElGraus; // AzimuteGraus e ElevacaoGraus
 
     public PTZController() {
         searchPorts();
@@ -48,12 +49,71 @@ public final class PTZController {
             System.out.println("*****Erro ao escolher a porta******");
         }
     }
+    /*
+     Calculo da Azimute
+     */
 
+    public int calculoAzimuteElevacao(int graus, String coordenada) {
+
+        System.out.println("graus digitado:" + AzGraus);
+        System.out.println("graus digitado:" + graus);
+
+        try {
+            if (coordenada.equals("azimute")) {
+                System.out.println("*****************AZIMUTE*******************");
+                if (graus >= 0 && graus < 340) {
+
+                    if (AzGraus < graus) {
+                        int c = graus - AzGraus;
+                        System.out.println("Calculo =" + graus + "-" + AzGraus + " = " + c);
+                        right(c);
+                    } else if (AzGraus > graus) {
+                        int dif = AzGraus - graus;
+                        System.out.println("Calculo =" + AzGraus + "-" + graus + " = " + dif);
+                        left(dif);
+                    } else if (graus == 0) {
+                        int dif = AzGraus - AzGraus;
+                        System.out.println("Calculo =" + AzGraus + "-" + AzGraus + " = " + dif);
+                        left(dif);
+                    }
+
+                }
+                AzGraus = graus;
+            } else {
+
+                System.out.println("**************ELEVAÇÃO*********************");
+                if (graus >= 0 && graus <= 85) {
+                    if (ElGraus < graus) {
+
+                        int c = graus - ElGraus;
+                        System.out.println("Calculo elevação =" + graus + "-" + ElGraus + " = " + c);
+                        up(c);
+                    } else if (ElGraus > graus) {
+                        int dif = ElGraus - graus;
+                        System.out.println("Calculo elevação =" + ElGraus + "-" + graus + " = " + dif);
+                        down(dif);
+
+                    } else if (graus == 0) {
+                        int dif = ElGraus - ElGraus;
+                        System.out.println("Calculo =" + ElGraus + "-" + ElGraus + " = " + dif);
+                        down(dif);
+                    }
+                }
+
+                ElGraus = graus;
+            }
+        } catch (Exception e) {
+            System.out.println("*****Erro ao calcular azimute 0º a 340º*  e Elevação 0 a 60º*****");
+        }
+
+        return 1;
+    }
     /*
      *Move para Esquerda
      */
+
     public int left(int graus) {
-        if (graus < 270) { //limite de elevação 270º
+        if (graus <= 340) { //limite de elevação 270º
             if (graus < 10) {
                 left = "!00" + graus + "L*";
                 System.out.println("LEFT = " + left);
@@ -77,7 +137,7 @@ public final class PTZController {
      *Move para Direita
      */
     public int right(int graus) {
-        if (graus < 270) { //limite de elevação 270º
+        if (graus <= 340) { //limite de elevação 270º
             if (graus < 10) {
                 String right1 = "!00" + graus + "R*";
                 System.out.println("RIGHT = " + right1);
@@ -169,4 +229,15 @@ public final class PTZController {
         return 1;
     }
 
+    /*
+     *Reset o pantilt para 0º e camera 0º para Posição Inicial
+     */
+   
+    public int resetPantilt() {
+        down = "!085D*";  
+        serialPort.enviaDados(down);
+        left = "!270L*";
+        serialPort.enviaDados(left);
+        return 1;
+    }
 }
