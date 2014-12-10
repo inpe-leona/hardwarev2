@@ -8,6 +8,7 @@ package br.leona.hardware.controller;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -17,6 +18,9 @@ import java.io.OutputStream;
 public class SerialPort {
 
     private OutputStream serialOut;
+    InputStream serialIn;
+    int aux1;
+
     private int taxa;
     private String portaCOM;
 
@@ -40,19 +44,22 @@ public class SerialPort {
             }
             //Abre a porta COM 
             gnu.io.SerialPort port = (gnu.io.SerialPort) porta.open("Comunicação serial", this.taxa);
-            serialOut = port.getOutputStream();
+            serialOut = port.getOutputStream(); // saida java
+            serialIn = port.getInputStream(); // entrada java
 
             port.setSerialPortParams(this.taxa, //taxa de transferência da porta serial 
                     gnu.io.SerialPort.DATABITS_8, //taxa de 10 bits 8 (envio)
                     gnu.io.SerialPort.STOPBITS_1, //taxa de 10 bits 1 (recebimento)
-                    gnu.io.SerialPort.PARITY_NONE); //receber e enviar dados
+                    gnu.io.SerialPort.PARITY_NONE
+            ); //receber e enviar dados
+
         } catch (Exception e) {
-            System.out.println("Erro ao inicializar no SerialPort"+e);
+            System.out.println("Erro ao inicializar no SerialPort" + e);
         }
     }
 
     /**
-     * Método que fecha a comunicação com a porta serial 
+     * Método que fecha a comunicação com a porta serial
      */
     public void close() {
         try {
@@ -66,14 +73,43 @@ public class SerialPort {
     /*
      * Converter para bytes para enviar dados para porta serial
      */
-    public int enviaDados(String opcao) {
+    public int enviaDados(String opcao) throws InterruptedException {
 
         try {
             byte[] bytes = opcao.getBytes();
             serialOut.write(bytes);
+
         } catch (IOException ex) {
-            System.out.println("Não foi possível enviar os dados para porta serial."+ex);
+            System.out.println("Não foi possível enviar os dados para porta serial." + ex);
         }
         return 0;
     }
+
+    public int recebeDados() throws InterruptedException {
+
+        while (true) {
+            try {
+                serialOut.write('S'); // enviamos um s de status
+                Thread.sleep(100);
+                aux1 = serialIn.read(); // e retorna status
+
+                if (aux1 == -1) {
+                    System.out.println(" ******************");
+                    System.out.println(" Arduino Inativo!  " + aux1);
+             
+                    System.out.println(" ******************");
+                } else {
+                    System.out.println(" ******************");
+                    System.out.println("Arduino Ativo!");
+                    System.out.println(aux1);
+                    System.out.println(" ******************");
+                }
+            } catch (IOException ex) {
+                System.out.println("Não foi possível receber os dados para porta serial." + ex);
+            }
+            return 0;
+        }
+
+    }
+
 }

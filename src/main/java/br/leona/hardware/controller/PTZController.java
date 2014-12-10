@@ -112,8 +112,9 @@ public final class PTZController {
      *Move para Esquerda
      */
 
-    public int left(int graus) {
-        if (graus <= 340) { //limite de elevação 270º
+    public int left(int graus)  throws InterruptedException {
+        if (graus < 270) { //limite de elevação 270º
+
             if (graus < 10) {
                 left = "!00" + graus + "L*";
                 System.out.println("LEFT = " + left);
@@ -136,8 +137,10 @@ public final class PTZController {
     /*
      *Move para Direita
      */
-    public int right(int graus) {
-        if (graus <= 340) { //limite de elevação 270º
+
+    public int right(int graus) throws InterruptedException  {
+        if (graus < 270) { //limite de elevação 270º
+
             if (graus < 10) {
                 String right1 = "!00" + graus + "R*";
                 System.out.println("RIGHT = " + right1);
@@ -160,7 +163,7 @@ public final class PTZController {
     /*
      *Move para Cima
      */
-    public int up(int graus) {
+    public int up(int graus) throws InterruptedException {
         if (graus < 85) { //limite de elevação 85º
             if (graus < 10) {
                 String up1 = "!00" + graus + "U*";
@@ -180,7 +183,7 @@ public final class PTZController {
     /*
      *Move para Baixo
      */
-    public int down(int graus) {
+    public int down(int graus) throws InterruptedException {
         if (graus < 85) { //limite de elevação 85º
             if (graus < 10) {
                 String x3 = "!00" + graus + "D*";
@@ -201,7 +204,7 @@ public final class PTZController {
     /*
      *Liga e desliga a camera
      */
-    public int camera(int valor) {
+    public int camera(int valor) throws InterruptedException {
         System.out.println("camera");
         if (valor == 1) {
             serialPort.enviaDados("!111O*");//camera ON
@@ -214,7 +217,7 @@ public final class PTZController {
     /*
      *Reset o pantilt para 0º e camera (a definir a posição) para Posição Inicial
      */
-    public int reset() {
+    public int reset() throws InterruptedException {
         System.out.println("Reset");
         serialPort.enviaDados("!111S*");
         return 1;
@@ -229,16 +232,17 @@ public final class PTZController {
         return 1;
     }
 
+
     /*
      *Reset o pantilt para 0º e camera 0º para Posição Inicial
      */
    
-    public int resetPantilt() {
-        
+    public int resetPantilt() throws InterruptedException {
         down = "!085D*";  
         serialPort.enviaDados(down);
         left = "!270L*";
         serialPort.enviaDados(left);
         return 1;
-    }
+
+}
 }

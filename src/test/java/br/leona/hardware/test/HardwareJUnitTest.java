@@ -43,52 +43,58 @@ public class HardwareJUnitTest {
     public void tearDown() {
     }
 
+
     
      @Test
     public void calculo() { 
-        
     int  graus = 22;
         assertEquals(1, ptzController.calculoAzimuteElevacao(graus,"azimute"));
     }
     
-    //@Test
-    public void camera() { // recebe 1 ou 0
+   
+
+
+    @Test
+    public void camera() throws InterruptedException { // recebe 1 ou 0
         int x = 0;
         assertEquals(1, ptzController.camera(x));
     }
 
-   // @Test
-    public void left() {
+
+
+    public void left() throws InterruptedException{
         int graus = 19;
         assertEquals(1, ptzController.left(graus));
     }
 
- //  @Test
-    public void right() {
+    @Test
+    public void right()throws InterruptedException {
         int graus = 29;
         assertEquals(1, ptzController.right(graus));
     }
 
-   // @Test
-    public void up() {
+
+   
+    @Test
+    public void up()throws InterruptedException {
         int graus = 9;
         assertEquals(1, ptzController.up(graus));
     }
 
-  //  @Test
-    public void down() {
+
+    @Test
+    public void down()throws InterruptedException {
         int graus = 5;
         assertEquals(1, ptzController.down(graus));
     }
 
-   // @Test
-    public void reset() {
-        assertEquals(1, ptzController.reset());
+    @Test
+    public void reset()throws InterruptedException {
+        assertEquals(1, ptzController.resetPantilt());
     }
 
     //@Test
     public void close() { // recebe 1 ou 0
         assertEquals(1, ptzController.close());
     }
-
 }
