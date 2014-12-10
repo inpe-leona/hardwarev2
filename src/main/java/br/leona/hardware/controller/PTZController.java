@@ -231,10 +231,10 @@ public final class PTZController {
 
     /*
      *Reset o pantilt para 0º e camera 0º para Posição Inicial
-    livia.miura
      */
    
     public int resetPantilt() {
+        
         down = "!085D*";  
         serialPort.enviaDados(down);
         left = "!270L*";
