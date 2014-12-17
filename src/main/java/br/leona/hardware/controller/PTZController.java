@@ -112,7 +112,7 @@ public final class PTZController {
      *Move para Esquerda
      */
 
-    public int left(int graus)  throws InterruptedException {
+    public int left(int graus) throws InterruptedException {
         if (graus < 270) { //limite de elevação 270º
 
             if (graus < 10) {
@@ -137,8 +137,7 @@ public final class PTZController {
     /*
      *Move para Direita
      */
-
-    public int right(int graus) throws InterruptedException  {
+    public int right(int graus) throws InterruptedException {
         if (graus < 270) { //limite de elevação 270º
 
             if (graus < 10) {
@@ -236,13 +235,22 @@ public final class PTZController {
     /*
      *Reset o pantilt para 0º e camera 0º para Posição Inicial
      */
-   
     public int resetPantilt() throws InterruptedException {
-        down = "!085D*";  
+        down = "!085D*";
         serialPort.enviaDados(down);
         left = "!270L*";
         serialPort.enviaDados(left);
         return 1;
 
-}
+    }
+    /*
+     * testa se o arduino está ativo ou inativo
+     */
+
+    public int recebeDados() throws InterruptedException {
+
+        serialPort.recebeDados();
+        return 1;
+    }
+
 }

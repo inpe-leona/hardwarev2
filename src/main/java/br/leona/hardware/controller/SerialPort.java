@@ -19,7 +19,7 @@ public class SerialPort {
 
     private OutputStream serialOut;
     InputStream serialIn;
-    int aux1;
+
 
     private int taxa;
     private String portaCOM;
@@ -86,10 +86,10 @@ public class SerialPort {
     }
 
     public int recebeDados() throws InterruptedException {
-
+int aux1;
         while (true) {
             try {
-                serialOut.write('S'); // enviamos um s de status
+                serialOut.write('!'); // enviamos um ! de status
                 Thread.sleep(100);
                 aux1 = serialIn.read(); // e retorna status
 
