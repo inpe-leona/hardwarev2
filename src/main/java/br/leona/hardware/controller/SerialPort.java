@@ -10,24 +10,61 @@ import gnu.io.NoSuchPortException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author leona
  */
-public class SerialPort {
-
-    private OutputStream serialOut;
-    InputStream serialIn;
-
-    private int taxa, status;
+@XmlRootElement
+@XmlType(propOrder = { "portaCOM", "taxa", "status" })
+public class SerialPort {    
+    private int taxa;
+    private int status;
     private String portaCOM;
+    private OutputStream serialOut;    
+    private InputStream serialIn;
 
+    
+    public SerialPort() {
+        portaCOM = "COM4";
+        taxa = 9600;
+        initialize();
+    }
+    
     public SerialPort(String portaCOM, int taxa) {
         this.portaCOM = portaCOM;
         this.taxa = taxa;
         initialize();
+    }
+    
+    @XmlElement(name = "taxa")
+    public int getTaxa() {
+        return taxa;
+    }
 
+    public void setTaxa(int taxa) {
+        this.taxa = taxa;
+    }
+
+    @XmlElement(name = "status")
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
+    @XmlElement(name = "potaCOM")
+    public String getPortaCOM() {
+        return portaCOM;
+    }
+
+    public void setPortaCOM(String portaCOM) {
+        this.portaCOM = portaCOM;
     }
 
     /**
@@ -86,8 +123,7 @@ public class SerialPort {
     
     /*
      *Recebe o status do Arduino se está ativo ou inativo
-     */
-
+     */    
     public int recebeDados() throws InterruptedException {
 
         while (true) {

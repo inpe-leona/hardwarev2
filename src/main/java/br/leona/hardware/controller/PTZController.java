@@ -6,7 +6,11 @@
 package br.leona.hardware.controller;
 
 import gnu.io.CommPortIdentifier;
+import java.io.File;
 import java.util.Enumeration;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 /**
  *
@@ -23,7 +27,20 @@ public final class PTZController {
     public PTZController() {
         searchPorts();
         serialPort = new SerialPort(portaCOM, 9600);
+        try {
+            File file = new File("c:/hardware/serialPort.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(SerialPort.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            jaxbMarshaller.marshal(serialPort, file);
+            jaxbMarshaller.marshal(serialPort, System.out);
+ 
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }     
     }
 
     /*
