@@ -20,8 +20,7 @@ public class SerialPort {
     private OutputStream serialOut;
     InputStream serialIn;
 
-
-    private int taxa;
+    private int taxa, status;
     private String portaCOM;
 
     public SerialPort(String portaCOM, int taxa) {
@@ -84,24 +83,28 @@ public class SerialPort {
         }
         return 0;
     }
+    
+    /*
+     *Recebe o status do Arduino se está ativo ou inativo
+     */
 
     public int recebeDados() throws InterruptedException {
-int aux1;
+
         while (true) {
             try {
                 serialOut.write('!'); // enviamos um ! de status
                 Thread.sleep(100);
-                aux1 = serialIn.read(); // e retorna status
+                status = serialIn.read(); // e retorna status
 
-                if (aux1 == -1) {
+                if (status == -1) {
                     System.out.println(" ******************");
-                    System.out.println(" Arduino Inativo!  " + aux1);
-             
+                    System.out.println(" Arduino Inativo!  " + status);
+
                     System.out.println(" ******************");
                 } else {
                     System.out.println(" ******************");
                     System.out.println("Arduino Ativo!");
-                    System.out.println(aux1);
+                    System.out.println(status);
                     System.out.println(" ******************");
                 }
             } catch (IOException ex) {

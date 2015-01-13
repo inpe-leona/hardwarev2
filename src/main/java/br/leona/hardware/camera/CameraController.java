@@ -9,7 +9,7 @@ import javax.media.Player;
 
 /**
  *
- * @author Leona_Lenovo
+ * @author Leona
  */
 public final class CameraController {
 
@@ -35,17 +35,24 @@ public final class CameraController {
 
     }
 
-    public String capturarCamera(String capture) {
+    public String iniciarCaptura(String capture) {
 
         if (capture.equals("on")) {
             System.out.println("**************Inicia de capturar imagens**********");
             capturar = new Capturar(this);
             capturar.start();
-        } else {
+        }
+        return capture;
+    }
+    
+    public String pararCaptura(String capture) {
+
+        if (capture.equals("off")) {
             capturar.stop();
             System.out.println("**************Cancela de capturar imagens**********");
         }
         return capture;
     }
+    
    } 
 

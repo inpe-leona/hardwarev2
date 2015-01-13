@@ -61,7 +61,7 @@ public final class PTZController {
         try {
             if (coordenada.equals("azimute")) {
                 System.out.println("*****************AZIMUTE*******************");
-                if (graus >= 0 && graus < 340) {
+                if (graus >= 0 && graus < 351) {
 
                     if (AzGraus < graus) {
                         int c = graus - AzGraus;
@@ -82,7 +82,7 @@ public final class PTZController {
             } else {
 
                 System.out.println("**************ELEVAÇÃO*********************");
-                if (graus >= 0 && graus <= 85) {
+                if (graus >= 0 && graus <= 70) {
                     if (ElGraus < graus) {
 
                         int c = graus - ElGraus;
@@ -113,7 +113,7 @@ public final class PTZController {
      */
 
     public int left(int graus) throws InterruptedException {
-        if (graus < 270) { //limite de elevação 270º
+        if (graus < 351) { //limite de elevação 270º
 
             if (graus < 10) {
                 left = "!00" + graus + "L*";
@@ -138,7 +138,7 @@ public final class PTZController {
      *Move para Direita
      */
     public int right(int graus) throws InterruptedException {
-        if (graus < 270) { //limite de elevação 270º
+        if (graus < 351) { //limite de elevação 270º
 
             if (graus < 10) {
                 String right1 = "!00" + graus + "R*";
@@ -163,7 +163,7 @@ public final class PTZController {
      *Move para Cima
      */
     public int up(int graus) throws InterruptedException {
-        if (graus < 85) { //limite de elevação 85º
+        if (graus < 71) { //limite de elevação 85º
             if (graus < 10) {
                 String up1 = "!00" + graus + "U*";
                 System.out.println("UP = " + up1);
@@ -183,7 +183,7 @@ public final class PTZController {
      *Move para Baixo
      */
     public int down(int graus) throws InterruptedException {
-        if (graus < 85) { //limite de elevação 85º
+        if (graus < 71) { //limite de elevação 85º
             if (graus < 10) {
                 String x3 = "!00" + graus + "D*";
                 System.out.println("DOWN = " + x3);
@@ -236,9 +236,9 @@ public final class PTZController {
      *Reset o pantilt para 0º e camera 0º para Posição Inicial
      */
     public int resetPantilt() throws InterruptedException {
-        down = "!085D*";
+        down = "!070D*";
         serialPort.enviaDados(down);
-        left = "!270L*";
+        left = "!350L*";
         serialPort.enviaDados(left);
         return 1;
 

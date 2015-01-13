@@ -61,13 +61,13 @@ public class HardwareJUnitTest {
     }
 
 
-  @Test
+ // @Test
     public void left() throws InterruptedException{
         int graus = 50;
         assertEquals(1, ptzController.left(graus));
     }
 
-   // @Test
+    @Test
     public void right()throws InterruptedException {
         int graus = 10;
         assertEquals(1, ptzController.right(graus));

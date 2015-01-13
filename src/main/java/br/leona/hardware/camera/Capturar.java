@@ -73,7 +73,8 @@ public class Capturar extends Thread {
 
                 FileDialog fd = new FileDialog(new Frame(), " ", FileDialog.SAVE);
 
-                imagem = "[Evento" + i + "]" + localDate() + " " + hora.format(date1);
+              //  imagem = "[Evento" + i + "]" + localDate() + " " + hora.format(date1);
+                 imagem = "[Evento" + i + "]";
                 System.out.println("Evento " + i + "]" + localDate() + " " + hora.format(date1));
                 fd.setDirectory(diretorio + observacao);
 
