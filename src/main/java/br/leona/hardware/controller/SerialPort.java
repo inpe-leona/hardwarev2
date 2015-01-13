@@ -5,68 +5,37 @@
  */
 package br.leona.hardware.controller;
 
+import br.leona.hardware.model.Servico;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author leona
  */
-@XmlRootElement
-@XmlType(propOrder = { "portaCOM", "taxa", "status" })
-public class SerialPort {    
+public class SerialPort extends Servico {    
     private int taxa;
-    private int status;
     private String portaCOM;
     private OutputStream serialOut;    
     private InputStream serialIn;
-
     
     public SerialPort() {
+        name = "pantilt";
         portaCOM = "COM4";
         taxa = 9600;
         initialize();
     }
     
-    public SerialPort(String portaCOM, int taxa) {
+    public SerialPort(String portaCOM, int taxa) {        
+        name = "pantilt";
         this.portaCOM = portaCOM;
         this.taxa = taxa;
         initialize();
     }
     
-    @XmlElement(name = "taxa")
-    public int getTaxa() {
-        return taxa;
-    }
-
-    public void setTaxa(int taxa) {
-        this.taxa = taxa;
-    }
-
-    @XmlElement(name = "status")
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-    
-    @XmlElement(name = "potaCOM")
-    public String getPortaCOM() {
-        return portaCOM;
-    }
-
-    public void setPortaCOM(String portaCOM) {
-        this.portaCOM = portaCOM;
-    }
-
     /**
      * Método que verifica se a comunicação com a porta serial está ok
      */
