@@ -12,6 +12,7 @@ import java.io.File;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 /**
  *
@@ -19,7 +20,7 @@ import javax.xml.bind.Marshaller;
  */
 public class FileXML {
     
-    public void createFile(String fileName, SerialPort serialPort) {
+    public void writeFile(String fileName, SerialPort serialPort) {
         Servico servico = serialPort;        
         try {
             File file = new File(fileName);
@@ -35,6 +36,21 @@ public class FileXML {
         } catch (JAXBException e) {
             e.printStackTrace();
         }     
+    }
+    
+    public Servico readFile(String fileName) {
+        try { 
+            File file = new File(fileName);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Servico.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Servico servico = (Servico) jaxbUnmarshaller.unmarshal(file);
+            System.out.println(servico);
+            return servico;
+	} catch (JAXBException e) {
+            e.printStackTrace();
+            return null;
+	}
     }
     
 }

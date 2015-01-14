@@ -25,7 +25,7 @@ public final class PTZController {
         searchPorts();
         serialPort = new SerialPort(portaCOM, 9600);
         fileXML = new FileXML();
-        fileXML.createFile("c:/hardware/serialPort.xml", serialPort);        
+        fileXML.writeFile("c:/hardware/serialPort.xml", serialPort);        
     }
 
     /*
