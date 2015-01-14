@@ -20,8 +20,7 @@ import javax.xml.bind.Unmarshaller;
  */
 public class FileXML {
     
-    public void writeFile(String fileName, SerialPort serialPort) {
-        Servico servico = serialPort;        
+    public void writeFile(String fileName, Servico servico) {
         try {
             File file = new File(fileName);
             JAXBContext jaxbContext = JAXBContext.newInstance(Servico.class);
