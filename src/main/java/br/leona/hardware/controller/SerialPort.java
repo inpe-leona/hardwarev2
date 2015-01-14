@@ -24,8 +24,6 @@ public class SerialPort extends Servico {
     
     public SerialPort() {
         name = "pantilt";
-        portaCOM = "COM4";
-        taxa = 9600;
         initialize();
     }
     

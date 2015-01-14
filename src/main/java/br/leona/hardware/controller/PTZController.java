@@ -5,20 +5,16 @@
  */
 package br.leona.hardware.controller;
 
-import br.leona.hardware.model.Servico;
+import br.leona.hardware.file.FileXML;
 import gnu.io.CommPortIdentifier;
-import java.io.File;
 import java.util.Enumeration;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 /**
  *
  * @author leona
  */
 public final class PTZController {
-
+    private FileXML fileXML;
     private SerialPort serialPort;
     private String portaCOM;
     CommPortIdentifier portas = null;
@@ -28,22 +24,8 @@ public final class PTZController {
     public PTZController() {
         searchPorts();
         serialPort = new SerialPort(portaCOM, 9600);
-        Servico servico = serialPort;
-        
-        try {
-            File file = new File("c:/hardware/serialPort.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Servico.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-            // output pretty printed
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            jaxbMarshaller.marshal(servico, file);
-            jaxbMarshaller.marshal(servico, System.out);
- 
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }     
+        fileXML = new FileXML();
+        fileXML.createFile("c:/hardware/serialPort.xml", serialPort);        
     }
 
     /*

@@ -27,16 +27,7 @@ public class Servico {
     public void setName(String name) {
         this.name = name;
     }
-    /*   
-    @XmlElement(name = "taxa")
-    public int getTaxa() {
-        return taxa;
-    }
-
-    public void setTaxa(int taxa) {
-        this.taxa = taxa;
-    }
-*/
+   
     @XmlElement(name = "status")
     public int getStatus() {
         return status;
@@ -45,14 +36,5 @@ public class Servico {
     public void setStatus(int status) {
         this.status = status;
     }
-    /*
-    @XmlElement(name = "portaCOM")
-    public String getPortaCOM() {
-        return portaCOM;
-    }
-
-    public void setPortaCOM(String portaCOM) {
-        this.portaCOM = portaCOM;
-    }
-*/
+   
 }
