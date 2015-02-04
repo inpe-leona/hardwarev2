@@ -5,8 +5,13 @@
  */
 package br.leona.hardware.test;
 
+import br.leona.hardware.camera.CameraController;
 import br.leona.hardware.controller.PTZController;
-import br.leona.hardware.controller.SerialPort;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.media.CannotRealizeException;
+import javax.media.NoPlayerException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
@@ -19,9 +24,10 @@ import org.junit.Test;
  * @author livia.miura
  */
 public class HardwareJUnitTest {
-
     private static PTZController ptzController;
-    private static SerialPort serialPort;
+    private static CameraController  cameraController;
+    private int valor = 0;
+   
 
     public HardwareJUnitTest() {
     }
@@ -29,19 +35,44 @@ public class HardwareJUnitTest {
     @BeforeClass
     public static void setUpClass() {
         ptzController = new PTZController();
+        cameraController = new CameraController();
+        try {
+            cameraController.iniciarCamera();
+        } catch (IOException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoPlayerException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CannotRealizeException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() {        
+       
     }
 
     @Before
     public void setUp() {
+        ptzController.cameraOn();       
+        cameraController.iniciarCaptura();
+        try {
+            Thread.sleep(1000);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }       
     }
 
     @After
     public void tearDown() {
-        close();
+        cameraController.pararCaptura();
+        ptzController.cameraOff();
+        try {
+            ptzController.reset();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertEquals(1, ptzController.close());        
     }
     
     @Test
@@ -50,48 +81,87 @@ public class HardwareJUnitTest {
         assertEquals(1, ptzController.calculoAzimuteElevacao(graus,"azimute"));
     }
     
-    @Test
-    public void camera() throws InterruptedException { // recebe 1 ou 0
+    //@Test
+    public void camera()  { // recebe 1 ou 0
         int x = 1;
-        assertEquals(1, ptzController.camera(x));
+        try {
+            assertEquals(1, ptzController.camera(x));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //@Test
+    public void cameraOn(){
+        assertEquals(0, ptzController.cameraOn());
+    }
+
+    //@Test
+    public void cameraOff(){
+        assertEquals(0, ptzController.cameraOff());
+    }
+    
+   @Test
+    public void left() {
+        int graus = 60;
+        try {
+            assertEquals(1, ptzController.left(graus));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Test
-    public void left() throws InterruptedException{
-        int graus = 50;
-        assertEquals(1, ptzController.left(graus));
+    public void right() {
+        int graus = 60;
+        try {
+            assertEquals(1, ptzController.right(graus));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Test
-    public void right()throws InterruptedException {
-        int graus = 10;
-        assertEquals(1, ptzController.right(graus));
+    public void up() {
+        int graus = 30;
+        try {
+            assertEquals(1, ptzController.up(graus));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Test
-    public void up()throws InterruptedException {
-        int graus = 19;
-        assertEquals(1, ptzController.up(graus));
+    public void down() {
+        int graus = 30;
+        try {
+            assertEquals(1, ptzController.down(graus));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    @Test
-    public void down()throws InterruptedException {
-        int graus = 5;
-        assertEquals(1, ptzController.down(graus));
+    //@Test
+    public void reset() {
+        try {
+            assertEquals(1, ptzController.resetPantilt());
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
-    @Test
-    public void reset()throws InterruptedException {
-        assertEquals(1, ptzController.resetPantilt());
+    
+    //@Test
+    public void recebe()  { 
+        try {
+            assertEquals(1, ptzController.recebeDados());
+        } catch (InterruptedException ex) {
+            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
+    
     //@Test
     public void close() { // recebe 1 ou 0
         assertEquals(1, ptzController.close());
     }
-    
-    @Test
-    public void recebe() throws InterruptedException { 
-          assertEquals(1, ptzController.recebeDados());
-    }
+        
 }

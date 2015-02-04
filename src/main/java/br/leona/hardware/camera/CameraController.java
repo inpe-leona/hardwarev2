@@ -35,23 +35,15 @@ public final class CameraController {
 
     }
 
-    public String iniciarCaptura(String capture) {
-
-        if (capture.equals("on")) {
-            System.out.println("**************Inicia de capturar imagens**********");
-            capturar = new Capturar(this);
-            capturar.start();
-        }
-        return capture;
+    public void iniciarCaptura() {
+        System.out.println("**************Inicia de capturar imagens**********");
+        capturar = new Capturar(this);
+        capturar.start(); 
     }
     
-    public String pararCaptura(String capture) {
-
-        if (capture.equals("off")) {
-            capturar.stop();
-            System.out.println("**************Cancela de capturar imagens**********");
-        }
-        return capture;
+    public void pararCaptura() {       
+        capturar.stop();
+        System.out.println("**************Cancela de capturar imagens**********");     
     }
     
    } 

@@ -34,7 +34,6 @@ public class Capturar extends Thread {
     LocalDateTime agora;
 
     Capturar(CameraController cameraController) {
-
         this.cameraController = cameraController;
     }
 
@@ -55,17 +54,17 @@ public class Capturar extends Thread {
         int[] a = new int[1080000];
         File dir = new File(diretorio + observacao);
 
-        FrameGrabbingControl fgc = (FrameGrabbingControl) cameraController.player.getControl("javax.media.control.FrameGrabbingControl");
-
-        Buffer buffer = fgc.grabFrame();
-
-        BufferToImage bti = new BufferToImage((VideoFormat) buffer.getFormat());
-        Image image = bti.createImage(buffer);
-        bi = (BufferedImage) image;
-
+       
         if (dir.mkdirs()) {
 
             for (int i = 0; i < a.length; i++) {
+                 FrameGrabbingControl fgc = (FrameGrabbingControl) cameraController.player.getControl("javax.media.control.FrameGrabbingControl");
+
+                Buffer buffer = fgc.grabFrame();
+
+                BufferToImage bti = new BufferToImage((VideoFormat) buffer.getFormat());
+                Image image = bti.createImage(buffer);
+                bi = (BufferedImage) image;
 
                 //agora = LocalDateTime.now();
                 Date date1 = new Date(System.currentTimeMillis());

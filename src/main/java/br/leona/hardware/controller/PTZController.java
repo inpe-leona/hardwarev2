@@ -8,6 +8,8 @@ package br.leona.hardware.controller;
 import br.leona.hardware.file.FileXML;
 import gnu.io.CommPortIdentifier;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -214,7 +216,33 @@ public final class PTZController {
         }
         return 1;
     }
+    
+    /*
+     *Liga a camera
+     */
+    public int cameraOn() {
+        System.out.println("camera");      
+        try {
+            return serialPort.enviaDados("!111O*");//camera ON        
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PTZController.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        }
+    }
+    
+    /*
+     *Liga desliga a camera
+     */
+    public int cameraOff() {
+        try {
+            return serialPort.enviaDados("!111F*"); //camera OFF
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PTZController.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        }
+    }
 
+    
     /*
      *Reset o pantilt para 0º e camera (a definir a posição) para Posição Inicial
      */
