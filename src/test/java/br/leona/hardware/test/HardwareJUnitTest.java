@@ -37,12 +37,8 @@ public class HardwareJUnitTest {
         ptzController = new PTZController();
         cameraController = new CameraController();
         try {
-            cameraController.iniciarCamera();
-        } catch (IOException ex) {
-            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoPlayerException ex) {
-            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CannotRealizeException ex) {
+            cameraController.iniciarVideo();
+        } catch (IOException | NoPlayerException | CannotRealizeException ex) {
             Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -53,7 +49,7 @@ public class HardwareJUnitTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException, NoPlayerException, CannotRealizeException {
         ptzController.cameraOn();       
         cameraController.iniciarCaptura();
         try {
@@ -64,9 +60,9 @@ public class HardwareJUnitTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws IOException, NoPlayerException, CannotRealizeException {
         cameraController.pararCaptura();
-        ptzController.cameraOff();
+      //  ptzController.cameraOff();
         try {
             ptzController.reset();
         } catch (InterruptedException ex) {
@@ -75,7 +71,7 @@ public class HardwareJUnitTest {
         assertEquals(1, ptzController.close());        
     }
     
-    @Test
+   // @Test
     public void calculo() { 
     int  graus = 22;
         assertEquals(1, ptzController.calculoAzimuteElevacao(graus,"azimute"));
@@ -84,14 +80,14 @@ public class HardwareJUnitTest {
     //@Test
     public void camera()  { // recebe 1 ou 0
         int x = 1;
-        try {
-            assertEquals(1, ptzController.camera(x));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    //    try {
+      //      assertEquals(1, ptzController.camera(x));
+   //     } catch (InterruptedException ex) {
+         //   Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+   //     }
     }
     
-    //@Test
+    ///@Test
     public void cameraOn(){
         assertEquals(0, ptzController.cameraOn());
     }
@@ -101,7 +97,7 @@ public class HardwareJUnitTest {
         assertEquals(0, ptzController.cameraOff());
     }
     
-   @Test
+   //@Test
     public void left() {
         int graus = 60;
         try {
@@ -111,7 +107,7 @@ public class HardwareJUnitTest {
         }
     }
 
-    @Test
+    //@Test
     public void right() {
         int graus = 60;
         try {
@@ -121,7 +117,7 @@ public class HardwareJUnitTest {
         }
     }
 
-    @Test
+   // @Test
     public void up() {
         int graus = 30;
         try {
@@ -131,7 +127,7 @@ public class HardwareJUnitTest {
         }
     }
 
-    @Test
+   // @Test
     public void down() {
         int graus = 30;
         try {

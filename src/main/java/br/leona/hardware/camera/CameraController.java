@@ -15,36 +15,35 @@ public final class CameraController {
 
     Player player;
     Capturar capturar;
+    
 
-  
-
-    public void iniciarCamera() throws IOException, NoPlayerException, CannotRealizeException {
+    public void iniciarVideo() throws IOException, NoPlayerException, CannotRealizeException {
 
         MediaLocator m1 = new MediaLocator("vfw://0");
-        
-         // para pensar!!!
-      /*  transmissor = new Transmitter(new MediaLocator("vfw://0"),
-                                              hostAddress, 1235, 
-                                              new Format(VideoFormat.JPEG));*/
-        
-        
+        if (m1==null){
+            System.out.println("Aqui chegou null");
+        }
         player = Manager.createRealizedPlayer(m1);
-        //  this.tbcamera.add(player.getVisualComponent());
         player.start();
-        System.out.println("");
-
+               System.out.println("hw- iniciarVideo");
     }
 
-    public void iniciarCaptura() {
-        System.out.println("**************Inicia de capturar imagens**********");
+    public void pararVideo() throws IOException, NoPlayerException, CannotRealizeException {
+      
+        player.stop();
+                System.out.println("hw- pararVideo");
+    }
+
+    public void iniciarCaptura() throws IOException, NoPlayerException, CannotRealizeException {
         capturar = new Capturar(this);
-        capturar.start(); 
+        capturar.start();
+            System.out.println("hw- iniciarCaptura");
     }
-    
-    public void pararCaptura() {       
-        capturar.stop();
-        System.out.println("**************Cancela de capturar imagens**********");     
-    }
-    
-   } 
 
+    public void pararCaptura() throws IOException, NoPlayerException, CannotRealizeException {
+        
+        capturar.stop();
+        System.out.println("hw- pararCaptura");
+    }
+
+}

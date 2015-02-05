@@ -207,26 +207,26 @@ public final class PTZController {
     /*
      *Liga e desliga a camera
      */
-    public int camera(int valor) throws InterruptedException {
-        System.out.println("camera");
+  /*  public int camera(int valor) throws InterruptedException {
+     
         if (valor == 1) {
             serialPort.enviaDados("!111O*");//camera ON
         } else {
             serialPort.enviaDados("!111F*"); //camera OFF
         }
         return 1;
-    }
+    }*/
     
     /*
      *Liga a camera
      */
     public int cameraOn() {
-        System.out.println("camera");      
+            System.out.println("hw- ligarCamera");    
         try {
             return serialPort.enviaDados("!111O*");//camera ON        
         } catch (InterruptedException ex) {
             Logger.getLogger(PTZController.class.getName()).log(Level.SEVERE, null, ex);
-            return -1;
+            return 1;
         }
     }
     
@@ -234,11 +234,13 @@ public final class PTZController {
      *Liga desliga a camera
      */
     public int cameraOff() {
+                System.out.println("hw- desligarCamera");
         try {
+            
             return serialPort.enviaDados("!111F*"); //camera OFF
         } catch (InterruptedException ex) {
             Logger.getLogger(PTZController.class.getName()).log(Level.SEVERE, null, ex);
-            return -1;
+            return 0;
         }
     }
 

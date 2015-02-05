@@ -18,6 +18,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.media.Buffer;
+import javax.media.CannotRealizeException;
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.NoPlayerException;
+import javax.media.Player;
 import javax.media.control.FrameGrabbingControl;
 import javax.media.format.VideoFormat;
 import javax.media.util.BufferToImage;
@@ -32,36 +37,37 @@ public class Capturar extends Thread {
     String nfile;
     BufferedImage bi;
     LocalDateTime agora;
-
+ 
     Capturar(CameraController cameraController) {
-        this.cameraController = cameraController;
+       this.cameraController = cameraController;
     }
-
+    
     @Override
     public void run() {
-
-        Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat format2 = new SimpleDateFormat("hh mm ss");
-        String formatada = format2.format(date);
+          System.out.println("hw-");
+        Date data = new Date();  
+        
+        String novaData = data.toString();
+        String formatada = ""+novaData.charAt(11)+novaData.charAt(12)+novaData.charAt(14)+novaData.charAt(15)+novaData.charAt(17)+novaData.charAt(18);
 
         String diretorio = "C:/ProjetoLeona/";
-        String observacao = "Evento "
+        String observacao = "Evento_"
                 + "" + localDate().format(DateTimeFormatter.ofPattern("ddMMyyyy"))
-                + " " + formatada
+                + "_" + formatada
                 + "/";
         String imagem;
-
+        System.out.println("entrei na captura 1************************");
         int[] a = new int[1080000];
         File dir = new File(diretorio + observacao);
 
-       
+        System.out.println("entrei na captura 2************************");
         if (dir.mkdirs()) {
 
             for (int i = 0; i < a.length; i++) {
-                 FrameGrabbingControl fgc = (FrameGrabbingControl) cameraController.player.getControl("javax.media.control.FrameGrabbingControl");
+                FrameGrabbingControl fgc = (FrameGrabbingControl) cameraController.player.getControl("javax.media.control.FrameGrabbingControl");
 
                 Buffer buffer = fgc.grabFrame();
-
+                System.out.println("entrei na captura**3*********************");
                 BufferToImage bti = new BufferToImage((VideoFormat) buffer.getFormat());
                 Image image = bti.createImage(buffer);
                 bi = (BufferedImage) image;
@@ -72,8 +78,8 @@ public class Capturar extends Thread {
 
                 FileDialog fd = new FileDialog(new Frame(), " ", FileDialog.SAVE);
 
-              //  imagem = "[Evento" + i + "]" + localDate() + " " + hora.format(date1);
-                 imagem = "[Evento" + i + "]";
+                //  imagem = "[Evento" + i + "]" + localDate() + " " + hora.format(date1);
+                imagem = "[Evento" + i + "]";
                 System.out.println("Evento " + i + "]" + localDate() + " " + hora.format(date1));
                 fd.setDirectory(diretorio + observacao);
 
@@ -95,10 +101,9 @@ public class Capturar extends Thread {
                 }
             }
         } else {
-
             System.out.println("Nao foi possivel criar o diretorio");
         }
-       
+
     }
 
     private LocalDate localDate() {
