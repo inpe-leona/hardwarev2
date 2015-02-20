@@ -159,5 +159,11 @@ public class HardwareJUnitTest {
     public void close() { // recebe 1 ou 0
         assertEquals(1, ptzController.close());
     }
+    
+    @Test
+    public void iniciarCaptura() throws InterruptedException, IOException, NoPlayerException, CannotRealizeException { 
+       
+          assertEquals(1, cameraController.iniciarCaptura());
+    }
         
 }

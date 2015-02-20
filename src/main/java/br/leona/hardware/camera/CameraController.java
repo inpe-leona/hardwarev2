@@ -34,10 +34,11 @@ public final class CameraController {
                 System.out.println("hw- pararVideo");
     }
 
-    public void iniciarCaptura() throws IOException, NoPlayerException, CannotRealizeException {
+    public int iniciarCaptura() throws IOException, NoPlayerException, CannotRealizeException {
         capturar = new Capturar(this);
         capturar.start();
             System.out.println("hw- iniciarCaptura");
+            return 1;
     }
 
     public void pararCaptura() throws IOException, NoPlayerException, CannotRealizeException {

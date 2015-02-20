@@ -37,18 +37,18 @@ public class Capturar extends Thread {
     String nfile;
     BufferedImage bi;
     LocalDateTime agora;
- 
+
     Capturar(CameraController cameraController) {
-       this.cameraController = cameraController;
+        this.cameraController = cameraController;
     }
-    
+
     @Override
     public void run() {
-          System.out.println("hw-");
-        Date data = new Date();  
-        
+        System.out.println("hw-");
+        Date data = new Date();
+
         String novaData = data.toString();
-        String formatada = ""+novaData.charAt(11)+novaData.charAt(12)+novaData.charAt(14)+novaData.charAt(15)+novaData.charAt(17)+novaData.charAt(18);
+        String formatada = "" + novaData.charAt(11) + novaData.charAt(12) + novaData.charAt(14) + novaData.charAt(15) + novaData.charAt(17) + novaData.charAt(18);
 
         String diretorio = "C:/ProjetoLeona/";
         String observacao = "Evento_"
@@ -72,15 +72,19 @@ public class Capturar extends Thread {
                 Image image = bti.createImage(buffer);
                 bi = (BufferedImage) image;
 
-                //agora = LocalDateTime.now();
                 Date date1 = new Date(System.currentTimeMillis());
                 SimpleDateFormat hora = new SimpleDateFormat("HH mm ss");
 
                 FileDialog fd = new FileDialog(new Frame(), " ", FileDialog.SAVE);
 
-                //  imagem = "[Evento" + i + "]" + localDate() + " " + hora.format(date1);
-                imagem = "[Evento" + i + "]";
-                System.out.println("Evento " + i + "]" + localDate() + " " + hora.format(date1));
+                if (i < 10) {
+                    imagem = "[Evento" + "0" + i + "]";
+                    System.out.println("[Evento" + "0" + i + "]");
+                } else {
+                    imagem = "[Evento" + i + "]";
+                    System.out.println("Evento " + i + "]" + localDate() + " " + hora.format(date1));
+                }
+
                 fd.setDirectory(diretorio + observacao);
 
                 fd.setFile(imagem);
