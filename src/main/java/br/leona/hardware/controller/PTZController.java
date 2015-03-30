@@ -61,24 +61,26 @@ public final class PTZController {
 
         System.out.println("graus digitado:" + AzGraus);
         System.out.println("graus digitado:" + graus);
-
+        int retorno = 0;
         try {
             if (coordenada.equals("azimute")) {
                 System.out.println("*****************AZIMUTE*******************");
+               
+   
                 if (graus >= 0 && graus < 351) {
 
                     if (AzGraus < graus) {
                         int c = graus - AzGraus;
                         System.out.println("Calculo =" + graus + "-" + AzGraus + " = " + c);
-                        right(c);
+                        retorno = right(c);
                     } else if (AzGraus > graus) {
                         int dif = AzGraus - graus;
                         System.out.println("Calculo =" + AzGraus + "-" + graus + " = " + dif);
-                        left(dif);
+                        retorno = left(dif);
                     } else if (graus == 0) {
                         int dif = AzGraus - AzGraus;
                         System.out.println("Calculo =" + AzGraus + "-" + AzGraus + " = " + dif);
-                        left(dif);
+                        retorno = left(dif);
                     }
 
                 }
@@ -91,16 +93,16 @@ public final class PTZController {
 
                         int c = graus - ElGraus;
                         System.out.println("Calculo elevação =" + graus + "-" + ElGraus + " = " + c);
-                        up(c);
+                         retorno =  up(c);
                     } else if (ElGraus > graus) {
                         int dif = ElGraus - graus;
                         System.out.println("Calculo elevação =" + ElGraus + "-" + graus + " = " + dif);
-                        down(dif);
+                        retorno = down(dif);
 
                     } else if (graus == 0) {
                         int dif = ElGraus - ElGraus;
                         System.out.println("Calculo =" + ElGraus + "-" + ElGraus + " = " + dif);
-                        down(dif);
+                        retorno = down(dif);
                     }
                 }
 
@@ -110,7 +112,7 @@ public final class PTZController {
             System.out.println("*****Erro ao calcular azimute 0º a 340º*  e Elevação 0 a 60º*****");
         }
 
-        return 1;
+        return retorno;
     }
     /*
      *Move para Esquerda
@@ -132,10 +134,12 @@ public final class PTZController {
                 System.out.println("LEFT = " + left);
                 serialPort.enviaDados(left);
             }
+            return 1;
         } else {
             System.out.println(" EXCEDE O LIMITE DE AZIMUTE PERMITIDO");
+            return 0;
         }
-        return 1;
+        
     }
 
     /*
@@ -157,10 +161,12 @@ public final class PTZController {
                 System.out.println("RIGHT = " + right3);
                 serialPort.enviaDados(right3);
             }
+             return 1;
         } else {
             System.out.println(" EXCEDE O LIMITE DE AZIMUTE PERMITIDO");
+             return 0;
         }
-        return 1;
+       
     }
 
     /*
@@ -177,10 +183,11 @@ public final class PTZController {
                 System.out.println("UP = " + up2);
                 serialPort.enviaDados(up2);
             }
+              return 1;
         } else {
             System.out.println(" EXCEDE O LIMITE DE ELEVAÇÃO PERMITIDO");
         }
-        return 1;
+        return 0;
     }
 
     /*
@@ -197,10 +204,11 @@ public final class PTZController {
                 System.out.println("DOWN = " + x3);
                 serialPort.enviaDados(x3);
             }
+              return 1;
         } else {
             System.out.println(" EXCEDE O LIMITE DE ELEVAÇÃO PERMITIDO");
         }
-        return 1;
+        return 0;
 
     }
 

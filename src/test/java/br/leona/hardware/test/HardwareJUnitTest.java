@@ -33,14 +33,15 @@ public class HardwareJUnitTest {
     }
 
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws InterruptedException {
         ptzController = new PTZController();
         cameraController = new CameraController();
-        try {
-            cameraController.iniciarVideo();
-        } catch (IOException | NoPlayerException | CannotRealizeException ex) {
-            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    //    try {
+        //    cameraController.iniciarVideo();
+                //ptzController.reset();
+    //    } catch (IOException | NoPlayerException | CannotRealizeException ex) {
+    //        Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+     //   }
     }
 
     @AfterClass
@@ -49,26 +50,28 @@ public class HardwareJUnitTest {
     }
 
     @Before
-    public void setUp() throws IOException, NoPlayerException, CannotRealizeException {
-        ptzController.cameraOn();       
-        cameraController.iniciarCaptura();
-        try {
-            Thread.sleep(1000);                 //1000 milliseconds is one second.
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }       
+    public void setUp() throws IOException, NoPlayerException, CannotRealizeException, InterruptedException {
+     
+        //ptzController.cameraOn();       
+       // cameraController.iniciarCaptura();
+       
+      ///  try {
+      //      Thread.sleep(1000);                 //1000 milliseconds is one second.
+      //  } catch(InterruptedException ex) {
+      //      Thread.currentThread().interrupt();
+     //   }       
     }
 
     @After
     public void tearDown() throws IOException, NoPlayerException, CannotRealizeException {
-        cameraController.pararCaptura();
+     //   cameraController.pararCaptura();
       //  ptzController.cameraOff();
-        try {
-            ptzController.reset();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        assertEquals(1, ptzController.close());        
+   //     try {
+     ///       ptzController.reset();
+    //    } catch (InterruptedException ex) {
+   //         Logger.getLogger(HardwareJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
+   //     }
+    //    assertEquals(1, ptzController.close());        
     }
     
    // @Test
@@ -137,7 +140,7 @@ public class HardwareJUnitTest {
         }
     }
 
-    //@Test
+   @Test
     public void reset() {
         try {
             assertEquals(1, ptzController.resetPantilt());
@@ -146,7 +149,7 @@ public class HardwareJUnitTest {
         }
     }
     
-    //@Test
+  // @Test
     public void recebe()  { 
         try {
             assertEquals(1, ptzController.recebeDados());
@@ -160,7 +163,7 @@ public class HardwareJUnitTest {
         assertEquals(1, ptzController.close());
     }
     
-    @Test
+   // @Test
     public void iniciarCaptura() throws InterruptedException, IOException, NoPlayerException, CannotRealizeException { 
        
           assertEquals(1, cameraController.iniciarCaptura());

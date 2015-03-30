@@ -74,15 +74,15 @@ public class Capturar extends Thread {
 
                 Date date1 = new Date(System.currentTimeMillis());
                 SimpleDateFormat hora = new SimpleDateFormat("HH mm ss");
-
+                long lDateTime = new Date().getTime();
                 FileDialog fd = new FileDialog(new Frame(), " ", FileDialog.SAVE);
 
                 if (i < 10) {
-                    imagem = "[Evento" + "0" + i + "]";
-                    System.out.println("[Evento" + "0" + i + "]");
+                    imagem = "[" + lDateTime + "]";
+                    System.out.println("[0" + i + "-" + lDateTime + "]");
                 } else {
-                    imagem = "[Evento" + i + "]";
-                    System.out.println("Evento " + i + "]" + localDate() + " " + hora.format(date1));
+                    imagem = "[" + lDateTime + "]";
+                    System.out.println("[" + i + "-" + lDateTime + "]");
                 }
 
                 fd.setDirectory(diretorio + observacao);
