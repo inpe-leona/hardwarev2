@@ -11,27 +11,38 @@ import gnu.io.NoSuchPortException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author leona
  */
-public class SerialPort extends Servico {    
+public class SerialPort {   
+    private final Servico servico;
     private int taxa;
     private String portaCOM;
     private OutputStream serialOut;    
     private InputStream serialIn;
     
     public SerialPort() {
-        name = "pantilt";
+        servico = new Servico();
+        servico.setName("pantilt");
+        servico.setStatus(0);
         initialize();
     }
     
     public SerialPort(String portaCOM, int taxa) {        
-        name = "pantilt";
+        servico = new Servico();
+        servico.setName("pantilt");
+        servico.setStatus(0);
         this.portaCOM = portaCOM;
         this.taxa = taxa;
         initialize();
+    }
+        
+    public Servico getServico() {
+        return servico;
     }
     
     /**
@@ -64,58 +75,63 @@ public class SerialPort extends Servico {
     /**
      * Método que fecha a comunicação com a porta serial
      */
-    public void close() {
+    public int close() {
         try {
             serialOut.close();
+            return 1;
         } catch (IOException e) {
             System.out.println("Não foi possível fechar porta COM");
-
+            return 0;
         }
     }
 
     /*
      * Converter para bytes para enviar dados para porta serial
      */
-    public int enviaDados(String opcao) throws InterruptedException {
-
+    public int enviaDados(String opcao) {
         try {
             byte[] bytes = opcao.getBytes();
             serialOut.write(bytes);
-
+            return 1;
         } catch (IOException ex) {
             System.out.println("Não foi possível enviar os dados para porta serial." + ex);
+            return 0;
         }
-        return 0;
     }
     
     /*
      *Recebe o status do Arduino se está ativo ou inativo
      */    
-    public int recebeDados() throws InterruptedException {
-
+    public int recebeDados() {
         while (true) {
             try {
                 serialOut.write('!'); // enviamos um ! de status
-                Thread.sleep(100);
-                status = serialIn.read(); // e retorna status
-
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(SerialPort.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                int status = serialIn.read(); // e retorna status
                 if (status == -1) {
                     System.out.println(" ******************");
                     System.out.println(" Arduino Inativo!  " + status);
-
+                    System.out.println(status);
                     System.out.println(" ******************");
+                    servico.setStatus(0);
+                    return 0;
                 } else {
                     System.out.println(" ******************");
                     System.out.println("Arduino Ativo!");
                     System.out.println(status);
                     System.out.println(" ******************");
+                    servico.setStatus(1);
+                    return 1;
                 }
             } catch (IOException ex) {
                 System.out.println("Não foi possível receber os dados para porta serial." + ex);
+                return 0;
             }
-            return 0;
         }
-
     }
 
 }
