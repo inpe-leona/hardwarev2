@@ -19,6 +19,7 @@ import org.bytedeco.javacv.VideoInputFrameGrabber;
 
 
 public class CaptureGrabber extends Thread {//implements Runnable {//   
+    private String path;
     private String pathImage;
     private final Servico servico;
     private final int port = 1235;
@@ -40,36 +41,29 @@ public class CaptureGrabber extends Thread {//implements Runnable {//
     
     @Override
     public void run() {
-        System.err.println("CaptureGrabber:run()");     
-        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String now =  date.format(new Date());           
-        String path = pathImage+now;
-        File dir = new File(path);
-        if(!dir.mkdirs()) System.out.println("Não foi possível criar o diretório: "+path);
-        else {            
-            servico.setStatus(1);
-            canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-            grabber = new VideoInputFrameGrabber(0);
-        
-            try {            
-                grabber.start();//.restart();
-                IplImage img = null;
-                while (true) {
-                    img = grabber.grab();
-                    if (img != null) {
-                        String path_and_name = path +"\\" 
-                                + System.currentTimeMillis()+".jpg";
-                        //cvFlip(img, img, 1);//Espelho l-r = 90_degrees_steps_anti_clockwise                   
-                        cvSaveImage(path_and_name, img);                   
-                        // show image on window
-                        canvas.showImage(img);
-                        System.out.println("path and name: "+path_and_name);
-                    }
-                     //Thread.sleep(INTERVAL);
+        System.err.println("CaptureGrabber:run()");  
+        servico.setStatus(1);
+        canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        grabber = new VideoInputFrameGrabber(0);
+
+        try {            
+            grabber.start();//.restart();
+            IplImage img = null;
+            while (true) {
+                img = grabber.grab();
+                if (img != null) {
+                    String path_and_name = path +"\\" 
+                            + System.currentTimeMillis()+".jpg";
+                    //cvFlip(img, img, 1);//Espelho l-r = 90_degrees_steps_anti_clockwise                   
+                    cvSaveImage(path_and_name, img);                   
+                    // show image on window
+                    canvas.showImage(img);
+                    System.out.println("path and name: "+path_and_name);
                 }
-            } catch (Exception e) {
-                 System.out.println("ERRO Durante Captura: "+e);
+                 //Thread.sleep(INTERVAL);
             }
+        } catch (Exception e) {
+             System.out.println("ERRO Durante Captura: "+e);
         }
     }   
 
@@ -104,5 +98,13 @@ public class CaptureGrabber extends Thread {//implements Runnable {//
         }
         
     }
-   
+    
+    public boolean createDirectory() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date date = new Date();
+        String now =  dateFormat.format(date);           
+        path = pathImage+now;
+        File dir = new File(path);
+        return dir.mkdirs();
+    }
 }

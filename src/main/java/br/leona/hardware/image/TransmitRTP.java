@@ -69,6 +69,7 @@ public class TransmitRTP extends SwingWorker<Void, Void> {
         }
         if (transmitter != null) {
             transmitter.stop();
+           // transmitter.stopTransmitter();//????
         }
         System.err.println("Servidor desligado.");
         return null;

@@ -29,7 +29,7 @@ import org.junit.Test;
  */
 public class HardwareJUnitTest {
     private static PTZController ptzControll; 
-    private static CameraController cameraControll;
+ //   private static CameraController cameraControll;
     private static int port = 1235;
 
     public HardwareJUnitTest() {
@@ -38,7 +38,7 @@ public class HardwareJUnitTest {
     @BeforeClass
     public static void setUpClass() { 
         ptzControll = new PTZController();             
-        cameraControll = new CameraController(1235);
+       // cameraControll = new CameraController(1235);
         ptzControll.cameraOn();
         //cameraControll.transmit();
         //cameraControll.capture();        

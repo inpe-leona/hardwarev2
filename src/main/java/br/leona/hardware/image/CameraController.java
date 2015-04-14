@@ -57,6 +57,7 @@ public class CameraController {
     }
     
     public void capture(){  
+        captureGrabber.createDirectory();
         if(captureFlag == false) {
             captureGrabber.start();
             captureFlag = true;
@@ -65,6 +66,7 @@ public class CameraController {
     }
     
     public void stopCapture(){
+        System.out.println("***************************************ok******************************************");
         captureGrabber.suspend();
     }    
     

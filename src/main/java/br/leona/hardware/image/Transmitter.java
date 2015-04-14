@@ -164,6 +164,11 @@ public class Transmitter {
         }
         return null;
     }
+    //??
+   /* public void stopTransmitter(){
+        for(int i = 0; i < messageRTP.length; i++)
+            messageRTP[i].dispose();
+    }*/
 
     Format checkForVideoSizes(Format original, Format supported) {
         int width, height;
