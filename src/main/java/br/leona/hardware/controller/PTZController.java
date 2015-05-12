@@ -14,22 +14,23 @@ import java.util.Enumeration;
  *
  * @author leona
  */
-public final class PTZController {    
+public final class PTZController {
+
     private String fileName;
     private FileXML fileXML;
     private SerialPort serialPort;
     private String portaCOM;
     CommPortIdentifier portas = null;
-    String left, right, up, down;
-    int AzGraus, ElGraus; // AzimuteGraus e ElevacaoGraus
+    String left, right, up, down, zeroGraus;
+    int AzGraus, ElGraus, valorAtual; // AzimuteGraus e ElevacaoGraus
 
     public PTZController() {
         searchPorts();
         serialPort = new SerialPort(portaCOM, 9600);
         fileName = "c:/ProjetoLeona/pantilt.xml";
-        System.out.println("receberDados: "+recebeDados());
+        System.out.println("receberDados: " + recebeDados());
         fileXML = new FileXML();
-        fileXML.writeFile(fileName, serialPort.getServico());                
+        fileXML.writeFile(fileName, serialPort.getServico());
     }
 
     /*
@@ -59,12 +60,13 @@ public final class PTZController {
      Calculo da Azimute
      */
 
-    public int calculoAzimuteElevacao(int graus, String coordenada) {      
+    public int calculoAzimuteElevacao(int graus, String coordenada) {
         System.out.println("graus digitado:" + AzGraus);
         System.out.println("graus digitado:" + graus);
         int retorno = 0;
         try {
             if (coordenada.equals("azimute")) {
+
                 System.out.println("*****************AZIMUTE*******************");
                 if (graus >= 0 && graus < 351) {
                     if (AzGraus < graus) {
@@ -83,27 +85,58 @@ public final class PTZController {
                 }
                 AzGraus = graus;
             } else {
-
-                System.out.println("**************ELEVAÇÃO*********************");
-                if (graus >= 0 && graus <= 70) {
-                    if (ElGraus < graus) {
-                        int c = graus - ElGraus;
-                        System.out.println("Calculo elevação =" + graus + "-" + ElGraus + " = " + c);
-                         retorno =  up(c);
-                    } else if (ElGraus > graus) {
-                        int dif = ElGraus - graus;
-                        System.out.println("Calculo elevação =" + ElGraus + "-" + graus + " = " + dif);
-                        retorno = down(dif);
+                if (graus > 0 && graus <= 35) {
+                    if (valorAtual < graus) {
+                        int c = graus - valorAtual;
+                        up(c);
+                        System.out.println("Resultado =" + c);
+                    } else if (valorAtual > graus) {
+                        int dif = valorAtual - graus;
+                        down(dif);
+                        System.out.println("Resultado =" + dif);
                     } else if (graus == 0) {
-                        int dif = ElGraus - ElGraus;
-                        System.out.println("Calculo =" + ElGraus + "-" + ElGraus + " = " + dif);
-                        retorno = down(dif);
+                        int dif = valorAtual - valorAtual;
+                        down(dif);
+                        System.out.println("Resultado =" + dif);
+                    }
+                } else if (graus <= 0 && graus >= -35) {
+                    if (valorAtual == graus) {
+                        System.out.println("********valorAtualfor========*NUMERO*NEGATIVO*********");
+                        System.out.println("Graus negativo" + graus);
+                        System.out.println("Valor Atual = " + valorAtual);
+                        int c = valorAtual;
+                        System.out.println("Resultado =" + c);
+
+                    } else if (valorAtual < graus) {
+                        System.out.println("********valorAtualfor<<<<<<NUMERO*NEGATIVO*********");
+                        System.out.println("Graus negativo" + graus);
+                        System.out.println("Valor Atual = " + valorAtual);
+                        int c = graus - valorAtual;
+                        up(c);
+                        System.out.println("Resultado =" + c);
+
+                    } else if (valorAtual > graus && valorAtual != 0) {
+                        System.out.println("********valorAtualfor>>>>*NUMERO*NEGATIVO*********");
+                        System.out.println("Graus negativo" + graus);
+                        System.out.println("Valor Atual = " + valorAtual);
+                        int c = valorAtual - graus;
+                        down(c);
+
+                        System.out.println("Resultado =" + c);
+                    } else if (valorAtual == 0) {
+                        System.out.println("Elevação === 0");
+                        System.out.println("Graus negativo" + graus);
+                        System.out.println("Valor Atual = " + valorAtual);
+                        int dif = -graus;
+                        down(dif);
+                        System.out.println("Resultado =" + dif);
                     }
                 }
-                ElGraus = graus;
+                valorAtual = graus;
             }
+
         } catch (Exception e) {
-            System.out.println("*****Erro ao calcular azimute 0º a 340º*  e Elevação 0 a 60º*****");
+            System.out.println("*****Erro ao calcular azimute 0º a 350º*  e Elevação -35º a 35ºº*****");
             retorno = 0;
         }
         return retorno;
@@ -130,7 +163,7 @@ public final class PTZController {
         } else {
             System.out.println(" EXCEDE O LIMITE DE AZIMUTE PERMITIDO");
             return 0;
-        }        
+        }
     }
 
     /*
@@ -154,7 +187,7 @@ public final class PTZController {
         } else {
             System.out.println(" EXCEDE O LIMITE DE AZIMUTE PERMITIDO");
             return 0;
-        }       
+        }
     }
 
     /*
@@ -172,7 +205,7 @@ public final class PTZController {
                 return serialPort.enviaDados(up2);
             }
         } else {
-            System.out.println(" EXCEDE O LIMITE DE ELEVAÇÃO PERMITIDO");            
+            System.out.println(" EXCEDE O LIMITE DE ELEVAÇÃO PERMITIDO");
             return 0;
         }
     }
@@ -197,27 +230,15 @@ public final class PTZController {
         }
     }
 
-    /*
-     *Liga e desliga a camera
-     */
-  /*  public int camera(int valor) throws InterruptedException {
-     
-        if (valor == 1) {
-            serialPort.enviaDados("!111O*");//camera ON
-        } else {
-            serialPort.enviaDados("!111F*"); //camera OFF
-        }
-        return 1;
-    }*/
     
     /*
      *Liga a camera
      */
     public int cameraOn() {
-        System.out.println("hw- ligarCamera");    
+        System.out.println("hw- ligarCamera");
         return serialPort.enviaDados("!111O*");//camera ON        
     }
-    
+
     /*
      *Liga desliga a camera
      */
@@ -226,7 +247,6 @@ public final class PTZController {
         return serialPort.enviaDados("!111F*"); //camera OFF
     }
 
-    
     /*
      *Reset o pantilt para 0º e camera (a definir a posição) para Posição Inicial
      */
@@ -243,19 +263,23 @@ public final class PTZController {
         return serialPort.close();
     }
 
-
     /*
      *Reset o pantilt para 0º e camera 0º para Posição Inicial
      */
     public int resetPantilt() {
-        down = "!070D*";
-        if(serialPort.enviaDados(down) == 1){
-            left = "!350L*";
+        down = "!070D*";       //colocará o pantilt a -35graus
+        zeroGraus = "!035U*";  // ajustará para 0 graus a elevação
+        left = "!350L*";
+
+        if (serialPort.enviaDados(down) == 1) {
+            serialPort.enviaDados(zeroGraus);
+
             return serialPort.enviaDados(left);
-        }
-        else
+            // }
+        } else {
             return 0;
-    }
+        }
+    } 
     /*
      * testa se o arduino está ativo ou inativo
      */
