@@ -5,8 +5,6 @@
  */
 package br.leona.hardware.image;
 
-
-
 import br.leona.hardware.file.FileXML;
 import br.leona.hardware.model.Servico;
 import javax.media.MediaLocator;
@@ -20,15 +18,13 @@ public class CameraController {
     private final String pathImage;
     private final String fileName;
     private final Servico servico;
-    private final FileXML fileXML;
-    private final int port;// = 1235;    
+    private final FileXML fileXML;   
     private static CaptureGrabber captureGrabber;
     private static TransmitRTP transmitRTP;
     
-    public CameraController(int port){
+    public CameraController(){
         pathImage = "c:\\ProjetoLeona\\Evento_";
         fileName = "c:/ProjetoLeona/camera.xml";
-        this.port = port;
         servico = new Servico();
         servico.setName("camera");
         servico.setStatus(0);
@@ -38,7 +34,7 @@ public class CameraController {
         captureFlag = false;        
     }
     
-    public void transmit(){
+    public void transmit(int port){
         MediaLocator mediaLocator = new MediaLocator("vfw://0");
         if(mediaLocator != null) {
             servico.setStatus(1);

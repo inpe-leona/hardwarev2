@@ -56,7 +56,7 @@ public class HardwareJUnitTest {
         //cameraControll.stopCapture();
         //cameraControll.endCapture();
         //cameraControll.stopTransmit();        
-        ptzControll.cameraOff();
+        //ptzControll.cameraOff();
         ptzControll.close();
     }
 

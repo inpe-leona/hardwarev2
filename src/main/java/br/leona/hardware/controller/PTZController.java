@@ -18,7 +18,7 @@ public final class PTZController {
 
     private String fileName;
     private FileXML fileXML;
-    private SerialPort serialPort;
+    private SerialPortIO serialPort;
     private String portaCOM;
     CommPortIdentifier portas = null;
     String left, right, up, down, zeroGraus;
@@ -26,7 +26,7 @@ public final class PTZController {
 
     public PTZController() {
         searchPorts();
-        serialPort = new SerialPort(portaCOM, 9600);
+        serialPort = new SerialPortIO(portaCOM, 9600);
         fileName = "c:/ProjetoLeona/pantilt.xml";
         System.out.println("receberDados: " + recebeDados());
         fileXML = new FileXML();
@@ -286,6 +286,10 @@ public final class PTZController {
 
     public int recebeDados() {
         return serialPort.recebeDados();
+    }
+        
+    public String receberCoordXYZ() {        
+        return serialPort.receberCoordXYZ();
     }
 
 }
